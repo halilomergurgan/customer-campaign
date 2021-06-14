@@ -19,7 +19,7 @@
     - 'Müşteri' listeleme, ekleme, düzenleme ve silme işlemlerini yapabilirsiniz.
     - 'Ürün' listeleme, ekleme, düzenleme ve silme işlemlerini yapabilirsiniz.
     - 'Order' listeleme, ekleme, düzenleme ve silme işlemlerini yapabilirsiniz.
-    - 'Order Item' ekleme(add to cart) ve silme işlemlerini yapabilirsiniz.
+    - 'Order Item' ekleme(add to cart, sipariş oluşturma v.b.) ve silme işlemlerini yapabilirsiniz.
 
 - RESTful mimarisi kullanımına özen gösterilmiş olup RESTful api servisi oluşturulmuştur. Ayrıca Response için Response Class oluşturulmuştur. 
 
