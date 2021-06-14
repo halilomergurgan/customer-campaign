@@ -10,6 +10,7 @@ use App\Models\OrderItem;
 use App\Models\Orders;
 use App\Models\Product;
 use App\Responses\Response;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -109,7 +110,7 @@ class OrderController extends Controller
     public function getDiscount(int $orderId): JsonResponse
     {
         $getCheapestItemPurchase = $this->calculatedBuyTwoGetPercentCheapestItem($orderId);
-        $getSixOverPurchase = $this->calculatedBuySixOverGetOneFree($orderId);
+        $getSixOverPurchases = $this->calculatedBuySixOverGetOneFree($orderId);
 
         $orderItemsTotal = OrderItem::where('order_id', $orderId)->sum('total');
 
@@ -134,13 +135,15 @@ class OrderController extends Controller
                 ];
         }
 
-        if ($getSixOverPurchase) {
-            $calculatedDiscountData['discounts'][] =
-                [
-                    'discount_reason' => Category::where('id', 2)->first()->name,
-                    'discount_amount' => $getSixOverPurchase->unit_price,
-                    'sub_total' => $getSixOverPurchase->total - $getSixOverPurchase->unit_price,
-                ];
+        if ($getSixOverPurchases) {
+            foreach ($getSixOverPurchases as $getSixOverPurchase) {
+                $calculatedDiscountData['discounts'][] =
+                    [
+                        'discount_reason' => Category::where('id', 2)->first()->name,
+                        'discount_amount' => $getSixOverPurchase->unit_price,
+                        'sub_total' => $getSixOverPurchase->total - $getSixOverPurchase->unit_price,
+                    ];
+            }
         }
 
         $totalDiscount = collect($calculatedDiscountData['discounts'])->sum('discount_amount');
@@ -223,16 +226,16 @@ class OrderController extends Controller
     }
 
     /**
-     * @param  int  $orderId
-     * @return OrderItem|null
+     * @param int $orderId
+     * @return Collection|null
      */
-    private function calculatedBuySixOverGetOneFree(int $orderId): ?OrderItem
+    private function calculatedBuySixOverGetOneFree(int $orderId): ?Collection
     {
         return OrderItem::join('products', 'products.id', 'order_items.product_id')
             ->where('products.category', 2)
             ->where('order_items.order_id', $orderId)
             ->where('order_items.quantity', '>=', 6)
-            ->first();
+            ->get();
     }
 
     /**
