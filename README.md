@@ -1,7 +1,7 @@
 
 ## Proje Hakkında
 
-- Docker platformu kullanılmış olup 'sail' kullanılmıştır. [Kurulum için lütfen tıklayınız](https://laravel.com/docs/8.x/sail).
+- Docker platformu kullanılmış olup 'sail' kullanılmıştır. [Kurulum ve detaylı bilgi için lütfen tıklayınız](https://laravel.com/docs/8.x/sail).
 - Proje içerisinde dış kaynaklardan sadece docker platformu için yararlanılmıştır.
 - Proje de PHP 8 ve Laravel 8 kullanılmıştır.
 - Veritabanı olarak MySql kullanılmıştır.
